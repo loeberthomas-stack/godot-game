@@ -1,0 +1,16 @@
+# Godot
+.godot/
+*.import.tmp
+export_presets.cfg
+/build/
+
+# Test / tool output
+/reports/
+/tools/out/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# OS
+.DS_Store
+Thumbs.db
