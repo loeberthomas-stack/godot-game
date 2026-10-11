@@ -116,7 +116,11 @@ CLAUDE.md        short index + working rules, points to /docs
 
 **Why:** The last attempt's art failed on inconsistency, not on lack of assets. AI generators make inconsistency *worse* unless locked down by recipes and a unifying in-engine pass.
 
+## D10 — Project license: all rights reserved (2026-10-11)
+**Decision:** Proprietary, all rights reserved. Third-party assets keep their own licenses (recorded in assets.csv).
+**Why:** Keeps every option open; switching to an open license later is easy, taking one back is not.
+
 ---
 
 ## Open questions
-- **Project license** (LICENSE file): pending — proprietary/all rights reserved vs. open source.
+- None.
