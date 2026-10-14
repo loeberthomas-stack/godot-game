@@ -14,3 +14,6 @@ export_presets.cfg
 # OS
 .DS_Store
 Thumbs.db
+
+# gdUnit4 reports (inside the Godot project)
+/game/reports/

@@ -6,7 +6,7 @@ Order = priority.
 ## Setup (environment, D1–D9)
 - [x] Repo skeleton + docs + CLAUDE.md
 - [x] Godot 4 project in `game/`
-- [ ] gdUnit4 installed, one passing smoke test
+- [x] gdUnit4 installed, one passing smoke test
 - [ ] `tools/check` (`--fast` / `--full`)
 - [ ] Asset ledger check script
 - [ ] Scene smoke test (load every scene headless)

@@ -12,7 +12,7 @@ Format: what we decided, why, date. Open questions at the bottom.
 **Decision:**
 ```
 /game            Godot/engine project
-/tests           automated tests
+  /tests         automated tests (moved from /tests — see amendment below)
 /tools           scripts (tests, screenshots, sims, asset check)
 /docs
   vision.md         1 page: what the game is / isn't, pillars
@@ -37,6 +37,8 @@ CLAUDE.md        short index + working rules, points to /docs
 - Git from day one, commit after every working feature.
 
 **Why:** Agents need intent and context in the repo, not in chat history. File-by-file code maps go stale; high-level architecture doesn't.
+
+**Amended 2026-10-14:** Tests moved from top-level `/tests` to `/game/tests`. gdUnit4 (D8) only discovers tests inside the Godot project (`res://`), so a folder outside `game/` can't hold them.
 
 ## D3 — Skills strategy (2026-10-11)
 **Decision:**
