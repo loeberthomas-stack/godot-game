@@ -19,6 +19,14 @@ High-level only. No file-by-file map — agents read code for that.
 - `tools/` — check, screenshot, asset-ledger and simulation scripts
 - `docs/` — see CLAUDE.md
 
+## `tools/check`
+Bash script (D12), runs unchanged on Windows (Git Bash) and Linux. Exit 0 only if every step passed; per-step logs in `tools/out/`.
+- `--fast`: **Project import** (headless `--import`; fails on non-zero exit *or* any `ERROR` line, since asset errors still exit 0) → **Script compile** (`--check-only` on every `.gd` outside `game/addons/`, judged by exit code).
+- `--full`: `--fast` + **Unit tests** (gdUnit4 `runtest.sh` on `res://tests`, judged by exit code only: 0 = pass, anything else = fail).
+- New checks are added as one `step_*` function + one `run_step` line.
+- Finds Godot via `GODOT_BIN` env var → `tools/local.env` (git-ignored; see `tools/local.env.example`) → `godot` on PATH.
+- Run: Git Bash / Linux `tools/check --full`; Windows PowerShell `& "C:\Program Files\Git\bin\bash.exe" tools/check --full` (Git's bash isn't on PowerShell's PATH).
+
 ## Systems
 _None yet. Add one entry per system: name, responsibility, how it talks to others (signals, autoloads, data)._
 

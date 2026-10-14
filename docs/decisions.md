@@ -127,6 +127,11 @@ CLAUDE.md        short index + working rules, points to /docs
 **Why:** Most reliable for headless runs and for CI screenshots on GitHub runners (software OpenGL), runs on the widest hardware, supports web export. Fine for stylized 2D and simple 3D (D7).
 **Revisit:** When the game concept is chosen, if it needs Forward+ features (advanced 3D lighting, SDFGI, volumetric fog). Switching is one project setting.
 
+## D12 — `tools/check` is a Bash script (2026-10-14)
+**Decision:** `tools/check` is written in Bash and runs unchanged on Windows (Git Bash) and Linux (GitHub Actions). Test results are judged by exit code only. If a step ever needs real logic (CSV parsing, image checks), that step is written in GDScript and run by Godot — not in a second scripting language.
+**Why:** Bash is the only option already present on both machines with nothing to install: Git for Windows ships it and Claude Code uses it; Linux always has it. Python and PowerShell 7 aren't installed on Thomas's PC. gdUnit4's own runner (`runtest.sh`) is Bash too, so one code path covers both OSes.
+**Caveat:** Linux not verified until CI exists (no WSL on Thomas's PC).
+
 ---
 
 ## Open questions

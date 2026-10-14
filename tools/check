@@ -1,0 +1,155 @@
+#!/usr/bin/env bash
+# tools/check — the single "did it pass?" entry point (D8, D12).
+# Hooks, skills and CI call this; never their own variants.
+#
+#   tools/check --fast   quick checks (project import + script compile)
+#   tools/check --full   everything, including unit tests
+#
+# Exit code 0 only if every step passed.
+# Runs unchanged on Windows (Git Bash) and Linux. On Windows from PowerShell: bash tools/check --full
+
+set -u
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+GAME_DIR="$REPO_ROOT/game"
+OUT_DIR="$REPO_ROOT/tools/out"
+
+usage() {
+	cat <<'EOF'
+Usage: tools/check --fast | --full
+
+  --fast   Project import + compile every project script (headless)
+  --full   --fast, plus unit tests (gdUnit4)
+
+Godot is found via, in order:
+  1. GODOT_BIN environment variable
+  2. tools/local.env  (line: GODOT_BIN=C:\path\to\godot_console.exe) - see tools/local.env.example
+  3. 'godot' on PATH
+EOF
+}
+
+# ---------- Godot discovery ----------
+
+find_godot() {
+	local candidate="${GODOT_BIN:-}"
+	if [ -z "$candidate" ] && [ -f "$REPO_ROOT/tools/local.env" ]; then
+		# Read only the GODOT_BIN line; don't source the file.
+		candidate="$(grep -E '^[[:space:]]*GODOT_BIN=' "$REPO_ROOT/tools/local.env" | tail -n 1 | sed -E 's/^[[:space:]]*GODOT_BIN=//; s/\r$//; s/^"(.*)"$/\1/')"
+	fi
+	if [ -z "$candidate" ] && command -v godot >/dev/null 2>&1; then
+		candidate="$(command -v godot)"
+	fi
+	if [ -z "$candidate" ]; then
+		echo "ERROR: Godot not found. Set it in one of these ways:" >&2
+		echo "  1. GODOT_BIN environment variable" >&2
+		echo "  2. tools/local.env (copy tools/local.env.example)" >&2
+		echo "  3. put 'godot' on PATH" >&2
+		return 1
+	fi
+	# Accept Windows-style paths (C:\...) when running under Git Bash.
+	if command -v cygpath >/dev/null 2>&1; then
+		candidate="$(cygpath -u "$candidate")"
+	fi
+	if [ ! -f "$candidate" ]; then
+		echo "ERROR: Godot binary not found at: $candidate" >&2
+		return 1
+	fi
+	GODOT="$candidate"
+}
+
+strip_ansi() { sed -E 's/\x1b\[[0-9;]*[A-Za-z]//g'; }
+
+# ---------- Steps ----------
+# Each step writes its log to $1 and returns 0 (pass) or non-zero (fail).
+
+step_project_import() {
+	local log="$1"
+	"$GODOT" --headless --path "$GAME_DIR" --import >"$log" 2>&1
+	local code=$?
+	if [ $code -ne 0 ]; then
+		echo ">> Godot exited with code $code" >>"$log"
+		return 1
+	fi
+	# Godot can report broken scripts and still exit 0, so also scan the output.
+	if strip_ansi <"$log" | grep -qE '^(ERROR|SCRIPT ERROR|USER ERROR|Parse Error)'; then
+		echo ">> Errors found in import output" >>"$log"
+		return 1
+	fi
+	return 0
+}
+
+step_script_compile() {
+	local log="$1"
+	# --import does NOT parse scripts, so compile each project script with --check-only.
+	# Judged by Godot's exit code. Third-party addons are skipped. Needs the import step first (class cache).
+	: >"$log"
+	local failed=0 count=0 file
+	while IFS= read -r file; do
+		count=$((count + 1))
+		local res="res://${file#"$GAME_DIR"/}"
+		if ! "$GODOT" --headless --path "$GAME_DIR" --check-only -s "$res" >>"$log" 2>&1; then
+			echo ">> FAILED: $res" >>"$log"
+			failed=1
+		fi
+	done < <(find "$GAME_DIR" -name '*.gd' -not -path "$GAME_DIR/addons/*" -not -path "$GAME_DIR/.godot/*" | sort)
+	echo ">> Checked $count script(s)" >>"$log"
+	return $failed
+}
+
+step_unit_tests() {
+	local log="$1"
+	# Judged by exit code ONLY (gotchas.md): 0 = pass, anything else (100 failures, 101 warnings) = fail.
+	(cd "$GAME_DIR" && bash addons/gdUnit4/runtest.sh --godot_binary "$GODOT" \
+		--headless -a res://tests --ignoreHeadlessMode -c) >"$log" 2>&1
+	local code=$?
+	echo ">> gdUnit4 exit code: $code" >>"$log"
+	return $code
+}
+
+# ---------- Runner ----------
+
+FAILED=0
+
+run_step() {
+	local name="$1" fn="$2"
+	local log="$OUT_DIR/${fn#step_}.log"
+	local start=$SECONDS
+	if "$fn" "$log"; then
+		printf '  %-16s PASS  (%ss)\n' "$name" "$((SECONDS - start))"
+	else
+		printf '  %-16s FAIL  (%ss)  log: %s\n' "$name" "$((SECONDS - start))" "${log#"$REPO_ROOT"/}"
+		echo "  ---- last lines of log ----"
+		strip_ansi <"$log" | tail -n 25 | sed 's/^/  | /'
+		echo "  ---------------------------"
+		FAILED=1
+	fi
+}
+
+main() {
+	local mode="${1:-}"
+	case "$mode" in
+		--fast | --full) ;;
+		-h | --help) usage; exit 0 ;;
+		*) usage >&2; exit 2 ;;
+	esac
+	if [ $# -gt 1 ]; then usage >&2; exit 2; fi
+
+	find_godot || exit 2
+	mkdir -p "$OUT_DIR"
+
+	echo "tools/check $mode"
+	# Add new steps here (one line each).
+	run_step "Project import" step_project_import
+	run_step "Script compile" step_script_compile
+	if [ "$mode" = "--full" ]; then
+		run_step "Unit tests" step_unit_tests
+	fi
+
+	if [ $FAILED -ne 0 ]; then
+		echo "CHECKS FAILED"
+		exit 1
+	fi
+	echo "ALL CHECKS PASSED"
+}
+
+main "$@"

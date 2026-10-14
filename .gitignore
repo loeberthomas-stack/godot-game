@@ -17,3 +17,6 @@ Thumbs.db
 
 # gdUnit4 reports (inside the Godot project)
 /game/reports/
+
+# Machine-specific paths for tools/check
+/tools/local.env
