@@ -120,6 +120,11 @@ CLAUDE.md        short index + working rules, points to /docs
 **Decision:** Proprietary, all rights reserved. Third-party assets keep their own licenses (recorded in assets.csv).
 **Why:** Keeps every option open; switching to an open license later is easy, taking one back is not.
 
+## D11 — Renderer: Compatibility (2026-10-14)
+**Decision:** The Godot project uses the Compatibility renderer (OpenGL), 1280×720 base resolution, stretch mode `canvas_items`.
+**Why:** Most reliable for headless runs and for CI screenshots on GitHub runners (software OpenGL), runs on the widest hardware, supports web export. Fine for stylized 2D and simple 3D (D7).
+**Revisit:** When the game concept is chosen, if it needs Forward+ features (advanced 3D lighting, SDFGI, volumetric fog). Switching is one project setting.
+
 ---
 
 ## Open questions

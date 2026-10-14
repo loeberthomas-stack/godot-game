@@ -4,7 +4,7 @@ High-level only. No file-by-file map — agents read code for that.
 **Update in the same commit** whenever a system is added, removed or renamed.
 
 ## Stack
-- **Engine:** Godot 4 (current stable)
+- **Engine:** Godot 4.7.x (stable), Compatibility renderer (D11)
 - **Language:** GDScript (static typing preferred)
 - **Tests:** gdUnit4, run headless
 - **Checks:** `tools/check --fast | --full` — the only entry point; hooks, skills and CI all call it

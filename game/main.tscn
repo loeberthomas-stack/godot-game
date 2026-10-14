@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[node name="Main" type="Node2D"]
+
+[node name="PlaceholderLabel" type="Label" parent="."]
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 400.0
+offset_bottom = 63.0
+text = "Game 2 — placeholder"
