@@ -24,6 +24,8 @@ Thomas does not read code — tests and the review subagent are the gates.
 | `assets.csv` | Ledger for every file in `game/assets/` | Every asset added (`/add-asset`) |
 
 ## Working rules
+- **Pull at the start of every session.**
+- **Push after every commit** — chat writes specs to the repo, so local-only commits cause conflicts.
 - **Plan first.** Every feature starts in plan mode. Plans are plain language: what changes, what Thomas will see in-game, how it's tested, risks. No code in plans.
 - **One feature per session.** If it doesn't fit, split the spec before starting.
 - **"Done" means `tools/check --full` passes.** Never report done otherwise.
