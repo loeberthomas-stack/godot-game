@@ -6,7 +6,7 @@ Format: what we decided, why, date. Open questions at the bottom.
 
 ## D1 — Environment first, game later (2026-10-11)
 **Decision:** Set up the full work environment before writing any game code. The game concept is out of scope for now.
-**Why:** The previous attempt (Unity tower defense) failed by jumping into execution too fast; frustration came from art/assets and a clunky Cowork → Claude Code copy-paste workflow.
+**Why:** The previous attempt (Unity) failed by jumping into execution too fast; frustration came from art/assets and a clunky Cowork → Claude Code copy-paste workflow.
 
 ## D2 — Repo structure & persistent docs (2026-10-11)
 **Decision:**
@@ -132,7 +132,11 @@ CLAUDE.md        short index + working rules, points to /docs
 **Why:** Bash is the only option already present on both machines with nothing to install: Git for Windows ships it and Claude Code uses it; Linux always has it. Python and PowerShell 7 aren't installed on Thomas's PC. gdUnit4's own runner (`runtest.sh`) is Bash too, so one code path covers both OSes.
 **Caveat:** Linux not verified until CI exists (no WSL on Thomas's PC).
 
+## D13 — Game concept: 3D bullet heaven with companions; flat arena first (2026-10-20)
+**Decision:** The game is a 3D bullet heaven with elemental companions (see `vision.md`). Prototype = layer 1 (the run) only. Prototype on a **flat arena**; spherical planet maps are a later, time-boxed experiment once the core loop is fun. Code must not assume "up = Y" (character, camera, movement, projectiles), so the planet experiment stays cheap.
+**Why:** A sphere touches every system (controller, camera, AI movement, terrain, projectiles) and is the most likely part to eat weeks, while it isn't what makes the game fun. Flat first proves the loop; the experiment proves the planet.
+
 ---
 
 ## Open questions
-- None.
+- Run length, companion acquisition, exact level-up mechanics — see `vision.md`.

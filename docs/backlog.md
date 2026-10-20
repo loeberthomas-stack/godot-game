@@ -16,5 +16,13 @@ Order = priority.
 - [ ] Skills: install skill-creator + Godot skill (after review)
 - [ ] Skills: write `/feature`, `/add-asset`, `/end-session`, `/playtest`
 
-## Game
-_Empty until the game concept exists._
+## Game — prototype (layer 1, see vision.md)
+_Each item needs a spec in `docs/specs/` before work starts. No game feature before the Setup list is done._
+- [ ] Flat arena with hills and walls
+- [ ] Third-person WASD movement + camera (no "up = Y" assumption, D13)
+- [ ] Auto-cast spell + key-press spell
+- [ ] Enemy type + spawner that scales over time
+- [ ] XP / coin drops and pickup
+- [ ] Level-up: pick 1 of 3 upgrades
+- [ ] One companion: follow + attack
+- [ ] Run win condition
