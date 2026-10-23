@@ -143,6 +143,11 @@ CLAUDE.md        short index + working rules, points to /docs
 **Working rule:** Numbers, spells, statuses and combos Thomas gives are *examples of what the system must support*, not final content or limits.
 **Why:** More manageable than the bullet heaven (no character controller, camera, horde performance or planet maps), much better suited to automated testing and simulation, and gives companions more personality and the meta layer more depth. Hook: Pokémon progression without Pokémon's boring battles.
 
+## D15 — Battle view: 3D, on a 2D simulation plane (2026-10-23)
+**Decision:** The battle is shown in **3D** (top-down camera, low-poly greybox first). The simulation itself runs on a flat 2D plane with its own fixed-tick loop, collision and seeded RNG — not Godot's physics engine, which isn't deterministic.
+**Why:** 3D is what Thomas wants for the look; keeping the simulation 2D keeps it deterministic, fast to mass-simulate and independent of the view. Elevation later means extending the simulation, not the view.
+**Watch out:** 3D characters are where the first attempt's art pain came from. Mitigation: low-poly, procedural "juice" (tweens, squash/stretch, hit flashes, particles) instead of hand-made animation, and one fixed generation recipe (D9).
+
 ---
 
 ## Open questions

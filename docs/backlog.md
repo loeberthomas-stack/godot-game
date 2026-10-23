@@ -21,8 +21,17 @@ _Each item needs a spec in `docs/specs/` before work starts. No game feature bef
 - [ ] Battle simulation core: headless, seeded, deterministic (movement, sizes/collision, targeting, stats + defenses, modifier stack, damage ranges, death, win/loss)
 - [ ] Spells: 3 active per companion, priority + range + cooldown + conditions
 - [ ] Status effects (stun, slow, fear, burn, poison; bleed if cheap) with stacking rules + combos
-- [ ] Top-down battle view of the simulation (greybox, hit flashes, damage numbers)
+- [ ] Top-down 3D battle view of the simulation (greybox low-poly, hit flashes, damage numbers, status icons)
+- [ ] Post-fight summary / combat log (damage, healing, CC per companion)
 - [ ] Pre-fight placement + speed-up button
-- [ ] First 4 companions (e.g. Armadillo, Bear, Lizard, Axolotl)
+- [ ] First 4 companions (Bear, Lizard, Axolotl, Spider)
 - [ ] Batch simulation tool: run N seeded fights, report win rates per companion
 - [ ] Remaining 6 companions
+
+## Game — later (not prototype)
+- Obstacles and elevation on the battlefield
+- Lifesteal, anti-heal, overheal/shields via specific companions/spells/statuses
+- Death effects (revive, summon, on-death triggers)
+- Player targeting preferences in the team management layer
+- Spell reflect
+- Items

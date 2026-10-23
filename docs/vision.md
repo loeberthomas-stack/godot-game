@@ -24,9 +24,9 @@ A creature-collecting RPG where battles are real-time autobattles: recruit, leve
 ## Prototype scope
 1. Battle simulation core (headless, seeded): movement, sizes/collision, targeting, stats incl. defenses/resistances, modifier stack, damage ranges, death, win/loss.
 2. Spells: 3 per companion, priority + range + cooldown + conditions; statuses (stun, slow, fear, burn, poison) with stacking rules, and combos.
-3. Top-down visual battle view (greybox: shapes, colors, hit flashes, damage numbers, status icons).
+3. Top-down **3D** battle view (greybox low-poly: shapes, colors, hit flashes, damage numbers, status icons) + post-fight summary (damage/healing/CC per companion).
 4. Pre-fight placement + speed-up button.
-5. First 4 companions (Armadillo, Bear, Lizard, Axolotl).
+5. First 4 companions (Bear, Lizard, Axolotl, Spider).
 6. Batch simulation tool: N seeded fights, win rates per companion.
 7. Remaining 6 companions.
 
