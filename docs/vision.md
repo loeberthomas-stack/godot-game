@@ -1,46 +1,64 @@
 # Vision
 
-One page max. New session? Start here, then `decisions.md` (D13).
+One page max. New session? Start here, then `decisions.md` (D14).
 
 ## Pitch
-A 3D bullet heaven where you and a squad of quirky elemental companions snowball from weakling to unstoppable.
+A creature-collecting RPG where battles are real-time autobattles: recruit, level and combine a squad whose synergies win fights you watch unfold. Pokémon's progression, without Pokémon's boring battles.
 
 ## Pillars
-1. **Snowball power** — you grow exponentially stronger; the fun is optimizing that growth faster than the enemies scale.
-2. **Your squad matters** — companions move, think and fight with their own elements; they are not just orbiting weapons.
-3. **Short, replayable runs** — level-up choices, companions and elements make every run play differently.
+1. **The squad is the game** — the depth is in team building: companion choice, active spells, traits, evolutions, synergies.
+2. **Battles worth watching** — real time, 6 vs 6, speed matters, sizes matter. Fights are short, readable (you see *why* you won or lost) and flashy.
+3. **Collect and grow** — the adventure rewards new companions; every fight feeds progression.
 
 ## Layers
-1. **Run** *(prototype focus)* — third-person WASD in a 3D world, waves of enemies that scale over time. Spells fire automatically or on click/key, aiming is loose. Companions follow you with simple pathing and AI and attack with melee or magic spells. Kills and coin pickups give XP; level-ups upgrade your spells or companions (percentage boosts). The run has a win condition.
-2. **Character management** *(later)* — between runs: a flat set of base attributes to level up (HP, crit %, crit damage, base damage, projectile size, autocast frequency, …). Runs scale these by %; this layer sets the base values. Maybe multiple heroes, items or buffs later.
-3. **Adventure / RPG** *(long shot)* — Pokémon-style progression through a story by beating runs and boss levels. Possibly its own game; the game may be engaging enough without it.
+1. **Fight** *(prototype focus)* — two teams of 6 fight in real time on a top-down battlefield until one side is dead. The player positions the team before the fight, then watches (speed-up button). No control during the fight (D14).
+2. **Team management** *(next)* — out of combat only: level-ups, choosing the 3 active spells from a bigger arsenal, traits, evolutions, combining companions for synergies. Most of the design work goes here.
+3. **Adventure / RPG** *(later)* — Pokémon-style progression; new companions are found or won here. Stand-in until then: a route of 5–8 fights on a node map, with XP and recruit rewards.
 
-## Elements
-Fire, ice, electric, poison — for spells, companions and enemies.
+## Fight rules (first draft — refine in specs)
+- **6 vs 6.**
+- **Fine-grained positioning:** no coarse one-unit-per-tile grid. Companions have different sizes (e.g. 6 vs 8 units across) with matching hit/hurt boxes. Fine hex grid vs. continuous space with circular footprints: decided in the technical plan.
+- **Move speed:** distance a companion can move per second.
+- **3 active spells** per companion, chosen from a larger arsenal in the team management layer.
+- **Spells have range, cooldown and priority.** A companion casts its highest-priority spell that is in range and off cooldown, otherwise the next one, otherwise it moves.
+- **Known gap:** pure priority is too dumb for situational spells (e.g. heal only when an ally in range is low). Direction: each spell gets a **condition** ("ally below 50 % HP", "≥ 3 enemies in area") — gambit-style, like Final Fantasy XII. Conditions may later become something the player tunes in the team management layer.
+- **Roles are tendencies, not boxes:** hybrids are allowed (e.g. a tanky healer).
+- **Deterministic simulation:** a fight runs headless from a seed, so thousands of fights can be simulated for balancing (D8).
 
-## Maps
-- **Prototype:** flat arena with hills and walls, procedurally varied.
-- **Later experiment (time-boxed):** spherical "planet" maps of different sizes, gravity pulling towards the center, horizon not visibly curving. Systems should not assume "up = Y" so the experiment stays cheap (D13).
+## Initial companions (draft, not final)
+| Companion | Element | Likely role tendency |
+|---|---|---|
+| Marten | Electric | Fast skirmisher / assassin |
+| Lizard | Fire | Ranged mage, area damage |
+| Armadillo | Earth / rock | Tank |
+| Axolotl | Water | Healer / support |
+| Mouse | Arcane | Mage / control |
+| Bear | Fighting / blunt | Bruiser, stuns |
+| Spider | Nature / poison | Damage over time, control |
+| Dog | Doom / warlock | Curses, drain |
+| Cat | Bleed / scratch | Assassin, bleed stacks |
+| Chicken | Holy | Holy damage + buffs |
 
-## Prototype scope (layer 1 only)
-- Flat arena with a few hills and walls
-- Third-person WASD movement; one auto-cast spell + one spell on key press
-- One enemy type, spawning more and stronger over time
-- XP / coin drops; level-up = pick 1 of 3 upgrades
-- **One** companion that follows and attacks
-- Win condition (survive X minutes or kill a final boss)
-- Low-poly placeholder graphics (greybox first, D9)
+**Open design issue:** 10 companions with 10 unique elements means no element synergies (synergies need shared traits). Likely fix: two tag axes, e.g. ~5 elements + ~5 archetypes, so companions overlap on at least one tag.
 
-Fun with grey cubes first; elements, more companions and the planet come after.
+## Prototype scope
+1. Battle simulation core (headless, seeded): movement, sizes/collision, targeting, 3 spells with priority/range/cooldown, damage, death, win/loss.
+2. Top-down visual battle view of that simulation (greybox: shapes, colors, hit flashes, damage numbers).
+3. Pre-fight placement + speed-up button.
+4. First 4 companions covering different tendencies (e.g. Armadillo, Bear, Lizard, Axolotl) — prove the system before building all 10.
+5. Remaining 6 companions.
+
+Fun to watch with grey shapes first (D9).
 
 ## Open questions
-- Run length (survivors-likes: 10–30 min) — decides pacing and win condition
-- Companions: brought into the run, found during it, or both
-- Can companions die — balancing question, out of the prototype
-- Exact level-up mechanics
+- Fine hex grid vs. continuous positioning (technical plan)
+- Spell condition system design
+- Synergy/tag system
+- Fight length target (assumption: 20–40 s at normal speed)
+- Third-person spectating camera — later
 
-## What it is NOT (for now)
-- Story-driven (layer 3 is a long shot)
-- Multiplayer
-- Realistic graphics or precision aiming
-- 100k-entity hordes — hundreds of enemies (D7)
+## What it is NOT (v1)
+- Control during fights (you position, then watch)
+- Multiplayer — not ruled out later (PvP against friends), not in v1
+- Pokémon-style overworld — node-map route first
+- Realistic graphics

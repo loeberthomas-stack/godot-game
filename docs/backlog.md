@@ -16,13 +16,12 @@ Order = priority.
 - [ ] Skills: install skill-creator + Godot skill (after review)
 - [ ] Skills: write `/feature`, `/add-asset`, `/end-session`, `/playtest`
 
-## Game — prototype (layer 1, see vision.md)
+## Game — prototype: fight layer (see vision.md, D14)
 _Each item needs a spec in `docs/specs/` before work starts. No game feature before the Setup list is done._
-- [ ] Flat arena with hills and walls
-- [ ] Third-person WASD movement + camera (no "up = Y" assumption, D13)
-- [ ] Auto-cast spell + key-press spell
-- [ ] Enemy type + spawner that scales over time
-- [ ] XP / coin drops and pickup
-- [ ] Level-up: pick 1 of 3 upgrades
-- [ ] One companion: follow + attack
-- [ ] Run win condition
+- [ ] Battle simulation core: headless, seeded, deterministic (movement, sizes/collision, targeting, damage, death, win/loss)
+- [ ] Spells: 3 active per companion, priority + range + cooldown (+ first condition, e.g. heal when ally low)
+- [ ] Top-down battle view of the simulation (greybox, hit flashes, damage numbers)
+- [ ] Pre-fight placement + speed-up button
+- [ ] First 4 companions (e.g. Armadillo, Bear, Lizard, Axolotl)
+- [ ] Batch simulation tool: run N seeded fights, report win rates per companion
+- [ ] Remaining 6 companions

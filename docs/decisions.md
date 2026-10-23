@@ -132,11 +132,17 @@ CLAUDE.md        short index + working rules, points to /docs
 **Why:** Bash is the only option already present on both machines with nothing to install: Git for Windows ships it and Claude Code uses it; Linux always has it. Python and PowerShell 7 aren't installed on Thomas's PC. gdUnit4's own runner (`runtest.sh`) is Bash too, so one code path covers both OSes.
 **Caveat:** Linux not verified until CI exists (no WSL on Thomas's PC).
 
-## D13 — Game concept: 3D bullet heaven with companions; flat arena first (2026-10-20)
+## D13 — ~~Game concept: 3D bullet heaven with companions; flat arena first~~ (2026-10-20) — SUPERSEDED by D14
 **Decision:** The game is a 3D bullet heaven with elemental companions (see `vision.md`). Prototype = layer 1 (the run) only. Prototype on a **flat arena**; spherical planet maps are a later, time-boxed experiment once the core loop is fun. Code must not assume "up = Y" (character, camera, movement, projectiles), so the planet experiment stays cheap.
 **Why:** A sphere touches every system (controller, camera, AI movement, terrain, projectiles) and is the most likely part to eat weeks, while it isn't what makes the game fun. Flat first proves the loop; the experiment proves the planet.
+
+## D14 — Game concept: creature-collecting RPG with real-time autobattles (2026-10-23)
+**Decision:** Replaces D13. The game is a creature-collecting RPG whose battles are real-time 6 vs 6 autobattles (see `vision.md`). Prototype = the fight layer only; team management comes next; the Pokémon-style overworld comes later, with a node-map route as stand-in.
+**Pillar change:** The earlier requirement "never just watching during a fight" is dropped. Players position before the fight, then watch (speed-up button). The depth lives in team building outside combat. Consequence: fights must be short, readable and fun to watch — there is no in-fight control to fall back on.
+**Also:** Top-down view first (3rd-person spectating maybe later). Multiplayer not ruled out, not in v1. Fight simulation must be deterministic and runnable headless from a seed, so balance can be tested with mass simulations (D8).
+**Why:** More manageable than the bullet heaven (no character controller, camera, horde performance or planet maps), much better suited to automated testing and simulation, and gives companions more personality and the meta layer more depth. Hook: Pokémon progression without Pokémon's boring battles.
 
 ---
 
 ## Open questions
-- Run length, companion acquisition, exact level-up mechanics — see `vision.md`.
+- Fine hex grid vs. continuous positioning; spell condition system; synergy/tag system — see `vision.md`.
