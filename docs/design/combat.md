@@ -44,10 +44,10 @@ Order of operations:
 
 Additive is the baseline; one multiplicative layer at the end. **Which layer a modifier belongs to is a property of the modifier, set in data** — the system must not hard-code which source types go where.
 
-## Crit (proposal — not decided)
+## Crit (decided 2026-10-23)
 - **Crit damage is its own stat**, base **+50 %** (a crit deals 150 %).
 - **Overcrit:** crit chance above 100 % converts into crit damage (proposal: 1 % excess → +1 % crit damage), so the stat never goes dead.
-- Alternative: tiered crits (above 100 % = guaranteed crit + chance of a stronger "super crit", shown in a different color). Flashier, more complex.
+- Rejected for now: tiered "super crits" (flashier, more complex).
 
 ## Status effects
 Hard/soft control: **stun, fear, root, slow** (e.g. ice slows), … Damage/heal over time: **burn, poison, bleed** (DoTs), **regeneration** (HoTs), …
@@ -73,10 +73,9 @@ Combos create synergies **between companions** (Bear stuns → Cat crits) and **
 Equippable items that give bonuses (feed the modifier stack). Ideally visible on the companion — later step, after greybox.
 
 ## Open questions
-- **Player actions during the fight** (potions, spells) — contradicts D14 ("you position, then watch"); decide before speccing
+- **Player actions during the fight** (potions, spells) — open (D14)
 - How wide damage ranges may go in general (balance via simulation)
 - Status stacking rules per status (proposal above)
-- Crit / overcrit rules (proposal above)
 - Condition system design (what conditions exist, how they're expressed in data)
 - Synergy rules (what shared tags actually do) — see `companions.md`
 - Fight length target (assumption: 20–40 s at normal speed)

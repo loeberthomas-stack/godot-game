@@ -146,4 +146,4 @@ CLAUDE.md        short index + working rules, points to /docs
 ---
 
 ## Open questions
-- Fine hex grid vs. continuous positioning; spell condition system; synergy/tag system — see `vision.md`.
+- Game design open questions live in `docs/design/` (combat.md, companions.md).
