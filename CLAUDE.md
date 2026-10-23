@@ -12,6 +12,7 @@ Thomas does not read code — tests and the review subagent are the gates.
 | File | What | Update when |
 |---|---|---|
 | `docs/vision.md` | What the game is / isn't, pillars | Game concept changes |
+| `docs/design/` | Detailed game design (combat, companions, …) | Design decided in chat |
 | `docs/style-guide.md` | Art + audio rules, generation recipes | Style or recipe changes |
 | `docs/ARCHITECTURE.md` | Stack, systems, conventions, where data lives | **Same commit** as adding/removing/renaming a system |
 | `docs/decisions.md` | Decision log (D1, D2, …) | A real choice is made |

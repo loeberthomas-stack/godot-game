@@ -18,8 +18,9 @@ Order = priority.
 
 ## Game — prototype: fight layer (see vision.md, D14)
 _Each item needs a spec in `docs/specs/` before work starts. No game feature before the Setup list is done._
-- [ ] Battle simulation core: headless, seeded, deterministic (movement, sizes/collision, targeting, damage, death, win/loss)
-- [ ] Spells: 3 active per companion, priority + range + cooldown (+ first condition, e.g. heal when ally low)
+- [ ] Battle simulation core: headless, seeded, deterministic (movement, sizes/collision, targeting, stats + defenses, modifier stack, damage ranges, death, win/loss)
+- [ ] Spells: 3 active per companion, priority + range + cooldown + conditions
+- [ ] Status effects (stun, burn) + one combo
 - [ ] Top-down battle view of the simulation (greybox, hit flashes, damage numbers)
 - [ ] Pre-fight placement + speed-up button
 - [ ] First 4 companions (e.g. Armadillo, Bear, Lizard, Axolotl)
