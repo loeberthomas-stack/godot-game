@@ -20,7 +20,7 @@ Order = priority.
 _Each item needs a spec in `docs/specs/` before work starts. No game feature before the Setup list is done._
 - [ ] Battle simulation core: headless, seeded, deterministic (movement, sizes/collision, targeting, stats + defenses, modifier stack, damage ranges, death, win/loss)
 - [ ] Spells: 3 active per companion, priority + range + cooldown + conditions
-- [ ] Status effects (stun, burn) + one combo
+- [ ] Status effects (stun, slow, fear, burn, poison; bleed if cheap) with stacking rules + combos
 - [ ] Top-down battle view of the simulation (greybox, hit flashes, damage numbers)
 - [ ] Pre-fight placement + speed-up button
 - [ ] First 4 companions (e.g. Armadillo, Bear, Lizard, Axolotl)

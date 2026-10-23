@@ -138,8 +138,9 @@ CLAUDE.md        short index + working rules, points to /docs
 
 ## D14 — Game concept: creature-collecting RPG with real-time autobattles (2026-10-23)
 **Decision:** Replaces D13. The game is a creature-collecting RPG whose battles are real-time 6 vs 6 autobattles (see `vision.md`). Prototype = the fight layer only; team management comes next; the Pokémon-style overworld comes later, with a node-map route as stand-in.
-**Pillar change:** The earlier requirement "never just watching during a fight" is dropped. Players position before the fight, then watch (speed-up button). The depth lives in team building outside combat. Consequence: fights must be short, readable and fun to watch — there is no in-fight control to fall back on.
+**Player role:** Less active than in an action game — the player doesn't fight with combos themselves; the depth lives mostly in team building outside combat. Whether the player gets some actions during the fight (potions, spells) is **open** (corrected 2026-10-23: an earlier version of this entry wrongly said "watch-only"). Either way, fights must be short, readable and fun to watch.
 **Also:** Top-down view first (3rd-person spectating maybe later). Multiplayer not ruled out, not in v1. Fight simulation must be deterministic and runnable headless from a seed, so balance can be tested with mass simulations (D8).
+**Working rule:** Numbers, spells, statuses and combos Thomas gives are *examples of what the system must support*, not final content or limits.
 **Why:** More manageable than the bullet heaven (no character controller, camera, horde performance or planet maps), much better suited to automated testing and simulation, and gives companions more personality and the meta layer more depth. Hook: Pokémon progression without Pokémon's boring battles.
 
 ---

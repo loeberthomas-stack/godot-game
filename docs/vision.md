@@ -23,7 +23,7 @@ A creature-collecting RPG where battles are real-time autobattles: recruit, leve
 
 ## Prototype scope
 1. Battle simulation core (headless, seeded): movement, sizes/collision, targeting, stats incl. defenses/resistances, modifier stack, damage ranges, death, win/loss.
-2. Spells: 3 per companion, priority + range + cooldown + conditions; 2–3 statuses (e.g. stun, burn) and one combo.
+2. Spells: 3 per companion, priority + range + cooldown + conditions; statuses (stun, slow, fear, burn, poison) with stacking rules, and combos.
 3. Top-down visual battle view (greybox: shapes, colors, hit flashes, damage numbers, status icons).
 4. Pre-fight placement + speed-up button.
 5. First 4 companions (Armadillo, Bear, Lizard, Axolotl).
@@ -36,4 +36,4 @@ Not in the prototype: items, team management, route/adventure.
 - Multiplayer — not ruled out later (PvP against friends), not in v1
 - Pokémon-style overworld — node-map route first
 - Realistic graphics
-- Control during fights — **under review** (`design/combat.md`, open questions)
+- Action combat by the player — the player's in-fight role is small; exact actions open (`design/combat.md`)

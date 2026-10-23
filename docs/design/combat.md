@@ -1,10 +1,10 @@
 # Combat Design
 
-Living design reference for the fight layer. First draft — numbers are examples, not balance. Specs in `docs/specs/` refine individual parts.
+Living design reference for the fight layer. First draft. **Numbers, spells, statuses and combos here are examples of what the system must support** — not final content, balance or limits. Specs in `docs/specs/` refine individual parts.
 
 ## Basics
 - **6 vs 6**, real time, top-down, until one team is dead.
-- Player positions the team before the fight, then watches (speed-up button). In-fight player actions: **open question**, see below.
+- Player positions the team before the fight; speed-up button. The player's role during the fight is small (no action combat); whether they get some actions (potions, spells) is an **open question**, see below.
 - **Deterministic:** a fight runs headless from a seed — every damage roll, crit and proc included — so fights can be mass-simulated for balancing (D8) and replayed exactly.
 
 ## Positioning and movement
@@ -29,7 +29,8 @@ Example direction: fire = high potential, unreliable; ice = lower, steady. Balan
 **Defensive:** HP, armor, block, reflect, **resistance per element** (fire, water, …).
 **Movement:** move speed, size.
 
-Element resistances make team composition matter: facing a water-heavy team, you swap fire out and bring nature. Matchups come from stats (default resistances per element, modifiable by items/level-ups) — not a separate hard-coded type chart, so there is one system, not two.
+**Every companion has its own resistance profile** — e.g. the fire lizard resists fire but has negative water resistance. Profiles are per companion (in its data), so companions stay distinct; items and level-ups can modify them. This makes team composition matter: facing a water-heavy team, you swap fire out and bring nature.
+Resistances are the **only** matchup system — no additional Pokémon-style type-chart multiplier on top, so a matchup is always explainable by one number.
 
 ## Modifier stack (decided)
 Values are **calculated at cast/hit time, never stored as final numbers.** Sources: level-ups, items, auras, timed buffs, potions, combos, statuses.
@@ -38,14 +39,28 @@ Order of operations:
 1. **Base** value (from the spell/companion data)
 2. **+ Flat** bonuses
 3. **× (1 + sum of additive %)** — items, power-ups, level-ups: all additive with each other
-4. **× each multiplicative modifier** — buffs (e.g. "+10 % damage for 20 s" from a companion) and similar, applied last
+4. **× each modifier in the final layer** — e.g. buffs ("+10 % damage for 20 s"), combos ("+X % per poison stack on the target"), and anything else flagged as final-layer
 5. Roll within the damage range, then crit, then target defenses/resistances
 
-Additive is the baseline; one multiplicative layer at the end. Which sources are multiplicative is decided per modifier in data.
+Additive is the baseline; one multiplicative layer at the end. **Which layer a modifier belongs to is a property of the modifier, set in data** — the system must not hard-code which source types go where.
+
+## Crit (proposal — not decided)
+- **Crit damage is its own stat**, base **+50 %** (a crit deals 150 %).
+- **Overcrit:** crit chance above 100 % converts into crit damage (proposal: 1 % excess → +1 % crit damage), so the stat never goes dead.
+- Alternative: tiered crits (above 100 % = guaranteed crit + chance of a stronger "super crit", shown in a different color). Flashier, more complex.
 
 ## Status effects
-Hard/soft control: **stun, fear, root, slow**, … Damage/heal over time: **burn, poison, bleed** (DoTs), **regeneration** (HoTs), …
-Each status: duration, stacking rule (refresh / stack / ignore), visual indicator (must stay readable with 12 units on screen).
+Hard/soft control: **stun, fear, root, slow** (e.g. ice slows), … Damage/heal over time: **burn, poison, bleed** (DoTs), **regeneration** (HoTs), …
+Each status is data with: duration, tick interval, value per tick, **stacking rule** (refresh / add stack / independent instances / ignore), max stacks, and a visual indicator (must stay readable with 12 units on screen).
+
+Proposal to keep DoTs distinct (not decided):
+| Status | Stacking | Ticks | Feel |
+|---|---|---|---|
+| Poison | Stacks (each application adds a stack, own duration), cap TBD | Slow, steady | Builds up over time; combo fuel ("+X % per stack") |
+| Burn | No stacks, reapply refreshes duration | Fast, strong | Burst over a short time |
+| Bleed | Stacks, short duration | Medium | Rewards fast repeated hits (cat) |
+
+**Prototype statuses:** stun, slow, fear, burn, poison (+ bleed if cheap) — enough to prove the stacking rules and combos.
 
 ## Combos
 Spells can get bonuses against targets with a status, e.g.:
@@ -60,7 +75,8 @@ Equippable items that give bonuses (feed the modifier stack). Ideally visible on
 ## Open questions
 - **Player actions during the fight** (potions, spells) — contradicts D14 ("you position, then watch"); decide before speccing
 - How wide damage ranges may go in general (balance via simulation)
-- Status stacking rules per status
+- Status stacking rules per status (proposal above)
+- Crit / overcrit rules (proposal above)
 - Condition system design (what conditions exist, how they're expressed in data)
 - Synergy rules (what shared tags actually do) — see `companions.md`
 - Fight length target (assumption: 20–40 s at normal speed)
