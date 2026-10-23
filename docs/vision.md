@@ -39,7 +39,9 @@ A creature-collecting RPG where battles are real-time autobattles: recruit, leve
 | Cat | Bleed / scratch | Assassin, bleed stacks |
 | Chicken | Holy | Holy damage + buffs |
 
-**Open design issue:** 10 companions with 10 unique elements means no element synergies (synergies need shared traits). Likely fix: two tag axes, e.g. ~5 elements + ~5 archetypes, so companions overlap on at least one tag.
+**Tags:** every companion has an **element** and an **archetype** (e.g. tank, bruiser, assassin, mage, support), so companions share tags and synergies can form. Exact lists TBD.
+
+**Long term:** the roster grows well beyond 10 — Pokémon-scale (100+) is the horizon, not the prototype. Consequence for the build: companions, spells and tags are **data, not code** from day one. Adding companion #11 or #100 should mean adding a data file (+ art), never writing new systems. New spell *behaviours* may need code; new spells built from existing behaviours must not.
 
 ## Prototype scope
 1. Battle simulation core (headless, seeded): movement, sizes/collision, targeting, 3 spells with priority/range/cooldown, damage, death, win/loss.
@@ -53,7 +55,7 @@ Fun to watch with grey shapes first (D9).
 ## Open questions
 - Fine hex grid vs. continuous positioning (technical plan)
 - Spell condition system design
-- Synergy/tag system
+- Synergy rules (what shared tags actually do)
 - Fight length target (assumption: 20–40 s at normal speed)
 - Third-person spectating camera — later
 
