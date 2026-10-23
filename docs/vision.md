@@ -23,7 +23,10 @@ A creature-collecting RPG where battles are real-time autobattles: recruit, leve
 - **Spells have range, cooldown and priority.** A companion casts its highest-priority spell that is in range and off cooldown, otherwise the next one, otherwise it moves.
 - **Known gap:** pure priority is too dumb for situational spells (e.g. heal only when an ally in range is low). Direction: each spell gets a **condition** ("ally below 50 % HP", "≥ 3 enemies in area") — gambit-style, like Final Fantasy XII. Conditions may later become something the player tunes in the team management layer.
 - **Roles are tendencies, not boxes:** hybrids are allowed (e.g. a tanky healer).
-- **Deterministic simulation:** a fight runs headless from a seed, so thousands of fights can be simulated for balancing (D8).
+- **Spell library:** spells are defined once (e.g. Chain Lightning) and can be assigned to many companions — Pokémon-style learnsets.
+- **Spell attributes:** cast time, damage, crit chance, crit damage, range, cooldown, … Damage is a **range** (Firebolt 25–30, Chain Lightning 10–50), not a fixed number.
+- **Values are calculated at cast/hit time, never stored as final numbers.** A spell's base values pass through a **modifier stack** from all active sources: level-ups (e.g. +crit for all of a companion's spells), timed buffs (+10 % damage for 20 s), auras, potions, items. Order of operations must be fixed and documented (proposal: base → flat bonuses → additive % → multiplicative %), because it decides how fast power snowballs.
+- **Deterministic simulation:** a fight runs headless from a seed — including every damage roll and crit — so thousands of fights can be simulated for balancing (D8) and any fight can be replayed exactly.
 
 ## Initial companions (draft, not final)
 | Companion | Element | Likely role tendency |
@@ -53,6 +56,8 @@ A creature-collecting RPG where battles are real-time autobattles: recruit, leve
 Fun to watch with grey shapes first (D9).
 
 ## Open questions
+- **Player actions during the fight** (potions, spells) — contradicts D14 ("you position, then watch"); decide before speccing
+- Modifier stacking rules (additive vs. multiplicative %) and how wide damage ranges may be
 - Fine hex grid vs. continuous positioning (technical plan)
 - Spell condition system design
 - Synergy rules (what shared tags actually do)
