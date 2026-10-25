@@ -12,7 +12,7 @@ A creature-collecting RPG where battles are real-time autobattles: recruit, leve
 
 ## Layers
 1. **Fight** *(prototype focus)* — see `design/combat.md`.
-2. **Team management** *(next)* — out of combat: level-ups, choosing 3 active spells from a bigger arsenal, items, traits, evolutions, team composition and counters. Most of the design work goes here.
+2. **Team management** *(next)* — out of combat: level-ups, choosing one ability per slot (auto / cooldown / ultimate) from the companion's options, items, traits, evolutions, team composition and counters. Most of the design work goes here.
 3. **Adventure / RPG** *(later)* — Pokémon-style progression; new companions found or won here. Stand-in until then: a route of 5–8 fights on a node map.
 
 ## Key design rules
@@ -23,7 +23,7 @@ A creature-collecting RPG where battles are real-time autobattles: recruit, leve
 
 ## Prototype scope
 1. Battle simulation core (headless, seeded): movement, sizes/collision, targeting, stats incl. defenses/resistances, modifier stack, damage ranges, death, win/loss.
-2. Spells: 3 per companion, priority + range + cooldown + conditions; statuses (stun, slow, fear, burn, poison) with stacking rules, and combos.
+2. Abilities: auto attack (fills mana) + cooldown ability + ultimate (mana) + passive per companion, with conditions and targeting; statuses (stun, slow, fear, burn, poison) with stacking rules, and combos.
 3. Top-down **3D** battle view (greybox low-poly: shapes, colors, hit flashes, damage numbers, status icons) + post-fight summary (damage/healing/CC per companion).
 4. Pre-fight placement + speed-up button.
 5. First 4 companions (Bear, Lizard, Axolotl, Spider).

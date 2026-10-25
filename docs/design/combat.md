@@ -12,13 +12,38 @@ Living design reference for the fight layer. First draft. **Numbers, spells, sta
 - Fine hex grid vs. continuous space with circular footprints: decided in the technical plan (leaning continuous; placement can still snap to a grid).
 - **Move speed:** distance a companion can move per second.
 
-## Spells
-- **Spell library:** spells are defined once and can be assigned to many companions (Pokémon-style learnsets).
-- **3 active spells** per companion, chosen from a larger arsenal in the team management layer.
-- **Attributes:** cast time, damage (a **range**), crit chance, crit damage, range, cooldown, area, status effects applied, …
-- **Selection:** a companion casts its highest-priority spell that is in range, off cooldown and whose **condition** is met; otherwise the next; otherwise it moves.
-- **Conditions** (gambit-style, like Final Fantasy XII): "ally in range below 50 % HP", "≥ 3 enemies in area", "target is stunned", … May later become player-tunable in the team management layer.
-- **Defensive spells** exist: shields, block, reflect, damage reduction, cleanse, …
+## Abilities (decided 2026-10-25 — topic 1)
+Every companion has **three ability slots + one passive**. In team management the player picks **one ability per slot** from the companion's options. Not every ability has to be powerful — a wide range is the goal.
+
+| Slot | Trigger | Role |
+|---|---|---|
+| **Auto attack** | Whenever nothing else fires | Steady damage, healing or buff; **fills mana**. Melee (move into range first; single target or cleave hitbox) or ranged (projectile, AoE, chain, …). Can itself be a spell (e.g. a small Firebolt). |
+| **Cooldown ability** | Cooldown ready **and** condition met | Utility: interrupts, jumps, shields, CC, … |
+| **Ultimate** | Mana bar full | The big moment; one per companion |
+| **Passive** | Always on | Aura or trait, e.g. "nearby enemies −attack speed", "teammates +fire resistance" |
+
+**Action order** (one action at a time, deterministic): when free → ultimate if mana full → else cooldown ability if ready and condition met → else auto attack.
+
+**Mana**
+- Gained from **attacking and from taking damage**; the ratio is per companion in data.
+- **Starting mana** per companion (default 0) — tuning knob for openers.
+- **No mana gain while casting the ultimate** (prevents chaining).
+- **Interrupted ultimate = mana lost.** Guardrail: interrupts must not be so strong that ultimates never land — tuned via short ultimate cast times, long interrupt cooldowns, tenacity / diminishing returns (topic 2), and maybe "unstoppable" ultimates.
+
+**Cooldown abilities**
+- **Not available at fight start**: first availability = its own value per ability, default = the full cooldown (staggers the opening; a rogue's opener can be earlier).
+- **Fire-ASAP vs. hold-for-condition** is a flag per ability. Holding abilities wait for a valid target.
+- **Target selection:** filter = enemies/allies in range that meet the condition (e.g. "currently casting") → then pick by priority (e.g. healer over damage dealer, then lowest HP).
+
+**Healers are mostly hybrids** (examples, not final):
+- Druid-style: auto = damage spell ("moonfire"), cooldown = heal over time, ultimate = AoE that heals allies and damages enemies
+- Priest-style: auto = heal, cooldown = shield, ultimate = TBD
+- Controller-style: auto = damage, cooldown = CC, ultimate = mass heal
+
+**Spell library:** abilities are defined once and can be assigned to many companions (Pokémon-style learnsets).
+**Attributes:** cast time, damage (a **range**), crit chance, crit damage, range, cooldown or mana cost, area, statuses applied, targeting rule, condition, …
+**Defensive abilities** exist: shields, block, reflect, damage reduction, cleanse, …
+**Attack speed is a key stat:** more attacks → more mana → more ultimates.
 
 ## Damage variance as personality
 Damage ranges are a design tool, not noise. Some spells/elements are **reliable** (narrow range), others are **swingy** (wide range, high potential).
@@ -83,7 +108,7 @@ Answers from the full design review. Where these conflict with older text above,
 **Attacks and spells**
 - Every companion has a **basic attack** (melee or ranged, with a range). Attack speed is a stat.
 - A basic attack can itself be a spell (e.g. a fire companion's basic attack is a small Firebolt).
-- Possible TFT-style resource: a bar fills, then a bigger spell fires. Mana vs. cooldowns and how the 3 spells are prioritized: **separate deep-dive topic**.
+- Resource and priority: see "Abilities" (decided).
 - Crit chance: spell base crit + companion crit stat, combined in the additive % step.
 - Cast times can be **interrupted** (stun etc.); an interrupted spell goes on cooldown. Dedicated interrupt spells exist.
 
@@ -111,7 +136,7 @@ Answers from the full design review. Where these conflict with older text above,
 **Spell behaviours** (single target, area, cone, line, chain, self, ally, summon, dash, …) are the *code* part — a big ongoing area. Prototype: a small subset to get going.
 
 ## Deep-dive topics (next)
-1. Spell resource & priority: mana bar vs. cooldowns, basic-attack-as-spell, how 3 spells are prioritized
+1. ~~Spell resource & priority~~ — decided, see "Abilities"
 2. Crowd control: tenacity, diminishing returns, immunity windows, interrupts
 3. Defense formula: armor/resistance curve, hit vs. dodge vs. block order
 4. Type list and resistance profiles
