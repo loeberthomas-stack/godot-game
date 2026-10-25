@@ -78,6 +78,17 @@ Additive is the baseline; one multiplicative layer at the end. **Which layer a m
 Hard/soft control: **stun, fear, root, slow** (e.g. ice slows), … Damage/heal over time: **burn, poison, bleed** (DoTs), **regeneration** (HoTs), …
 Each status is data with: duration, tick interval, value per tick, **stacking rule** (refresh / add stack / independent instances / ignore), max stacks, and a visual indicator (must stay readable with 12 units on screen).
 
+**Built to grow (decided 2026-10-25):** statuses, CC and interrupts are an ever-expanding library (fear, slow, invulnerable, unstoppable, silence, …) to make builds interesting. So a new status must be **data**, assembled from a small set of generic building blocks — not new code:
+- **Action blocks:** can't move / can't auto attack / can't cast / can't use ultimate (stun = all; root = can't move; silence = can't cast; …)
+- **Forced movement:** e.g. fear = flee from source, knockback, pull
+- **Stat modifiers** (feed the modifier stack): slow = −move speed, curse = −resistance, …
+- **Periodic effects:** damage/heal per tick (burn, poison, regeneration)
+- **Immunity tags:** block statuses carrying a tag (unstoppable = immune to "CC"; invulnerable = immune to damage; cleanse = remove tag X)
+- **Triggers:** on apply / on tick / on expire / on hit (for combos and future effects)
+Only a genuinely new kind of building block needs code.
+
+**Prototype CC rules (simple, revisit with simulations):** tenacity reduces CC duration; short CC immunity after a stun/fear ends; no further diminishing returns until sims show stun-lock problems.
+
 Proposal to keep DoTs distinct (not decided):
 | Status | Stacking | Ticks | Feel |
 |---|---|---|---|
@@ -137,7 +148,7 @@ Answers from the full design review. Where these conflict with older text above,
 
 ## Deep-dive topics (next)
 1. ~~Spell resource & priority~~ — decided, see "Abilities"
-2. Crowd control: tenacity, diminishing returns, immunity windows, interrupts
+2. ~~Crowd control~~ — principle decided (status building blocks, see "Status effects"); details evolve with content
 3. Defense formula: armor/resistance curve, hit vs. dodge vs. block order
 4. Type list and resistance profiles
 5. Targeting rules list
