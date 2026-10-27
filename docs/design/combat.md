@@ -81,6 +81,27 @@ Dodges and blocks show as floating text ("Dodge", "Blocked").
 - **Damage over time can't crit by default**; a per-ability flag can allow it.
 - Later: armor/resistance **penetration** as the attacker-side counter.
 
+## Types and resistance profiles (decided 2026-10-27 — topic 4)
+| Type | Defended by |
+|---|---|
+| Physical (blunt, bleed, scratch, …) | Armor + block |
+| Fire | Fire resistance |
+| Water / ice | Water resistance |
+| Electric | Electric resistance |
+| Nature / poison | Nature resistance |
+| Earth | Earth resistance |
+| Arcane | Arcane resistance |
+| Holy | Holy resistance |
+| Doom | Doom resistance |
+| *True* | Nothing (rare abilities) |
+
+- **One type per companion** for now. Data must allow **a second type later** (mixed types are planned, e.g. via evolutions).
+- **Resistance profiles** live in each companion's data. New companions start from a **template for their type**, then get tuned:
+  - own type: strong resistance
+  - 1–2 weaknesses: negative values
+  - everything else 0; archetype adds on top (e.g. tanks get armor)
+- **Starter weakness cycle** (template defaults only — not a separate type chart): fire → weak to water → weak to electric → weak to earth → weak to nature → weak to fire. Holy ↔ doom weak to each other. Arcane neutral.
+
 ## Modifier stack (decided)
 Values are **calculated at cast/hit time, never stored as final numbers.** Sources: level-ups, items, auras, timed buffs, potions, combos, statuses.
 
@@ -136,7 +157,7 @@ Equippable items that give bonuses (feed the modifier stack). Ideally visible on
 Answers from the full design review. Where these conflict with older text above, these win.
 
 **Types**
-- Damage **types**: physical (blunt, bleed/scratch, …) + elements (fire, water/ice, electric, nature/poison, arcane, holy, doom, …). List TBD.
+- Damage **types**: physical + 8 elements + true damage — decided, see "Types and resistance profiles".
 - **Physical is countered by armor; elements by elemental resistance.**
 - Defense formula: decided, see "Defense and hit resolution".
 
@@ -174,7 +195,7 @@ Answers from the full design review. Where these conflict with older text above,
 1. ~~Spell resource & priority~~ — decided, see "Abilities"
 2. ~~Crowd control~~ — principle decided (status building blocks, see "Status effects"); details evolve with content
 3. ~~Defense formula~~ — decided, see "Defense and hit resolution"
-4. Type list and resistance profiles
+4. ~~Type list and resistance profiles~~ — decided
 5. Targeting rules list
 6. Spell behaviour primitives for the prototype
 
