@@ -102,6 +102,32 @@ Dodges and blocks show as floating text ("Dodge", "Blocked").
   - everything else 0; archetype adds on top (e.g. tanks get armor)
 - **Starter weakness cycle** (template defaults only — not a separate type chart): fire → weak to water → weak to electric → weak to earth → weak to nature → weak to fire. Holy ↔ doom weak to each other. Arcane neutral.
 
+## Targeting (decided 2026-10-27 — topic 5)
+Every ability picks targets in two steps — **filter, then rank**:
+1. **Filter:** side (enemy / ally / self), in range or "anywhere" (walks there), condition (casting, below X % HP, has status Y, not already affected by this ability, …)
+2. **Rank:** nearest / furthest, lowest / highest HP (absolute or %), highest threat, archetype priority (e.g. healer before damage dealer), most enemies in area (AoE aims where it hits most)
+
+Ties break deterministically (e.g. unit ID), so simulations stay reproducible.
+
+**Defaults** (so not every ability needs custom rules):
+| Ability kind | Default |
+|---|---|
+| Auto attack | Nearest enemy (keeps it, see below) |
+| Single heal | Lowest HP % ally in range |
+| Area damage | Spot with the most enemies |
+| Buff | Nearest ally without this buff |
+
+**Keeping a target — sticky, with drop triggers + re-evaluation:**
+- **Drop and re-pick immediately** when the target: dies · becomes untargetable (invisible, stealth, invulnerable-untargetable, …) · gets out of reach (beyond range + a leash distance, e.g. after teleporting away) · or when the attacker is taunted, feared, or moved by its own dash/jump.
+- Within the leash the companion **follows** the target (e.g. a short blink); beyond it, it re-picks.
+- **Periodic re-evaluation** (e.g. every ~1.5 s): switch only if the new best target is clearly better (e.g. ≥ 30 % closer) — hysteresis against ping-ponging, which looks bad.
+- Drop triggers are a **list in data/code that will grow**; new mobility or stealth effects add triggers, not special cases.
+- Leash, interval and hysteresis values: tuned via simulation.
+
+**Taunt** overrides everything: a taunted unit must target the taunter.
+**Threat** (simple for now): high base threat for tanks; dealing/taking damage adds a little.
+**Assassins:** no special rule. Their jump ability ranks e.g. "furthest" or "lowest HP" and re-picks the target; afterwards they follow the normal "attack nearest" default until the jump is ready again.
+
 ## Modifier stack (decided)
 Values are **calculated at cast/hit time, never stored as final numbers.** Sources: level-ups, items, auras, timed buffs, potions, combos, statuses.
 
@@ -196,7 +222,7 @@ Answers from the full design review. Where these conflict with older text above,
 2. ~~Crowd control~~ — principle decided (status building blocks, see "Status effects"); details evolve with content
 3. ~~Defense formula~~ — decided, see "Defense and hit resolution"
 4. ~~Type list and resistance profiles~~ — decided
-5. Targeting rules list
+5. ~~Targeting rules~~ — decided
 6. Spell behaviour primitives for the prototype
 
 ## Open questions
