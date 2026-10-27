@@ -57,6 +57,30 @@ Example direction: fire = high potential, unreliable; ice = lower, steady. Balan
 **Every companion has its own resistance profile** — e.g. the fire lizard resists fire but has negative water resistance. Profiles are per companion (in its data), so companions stay distinct; items and level-ups can modify them. This makes team composition matter: facing a water-heavy team, you swap fire out and bring nature.
 Resistances are the **only** matchup system — no additional Pokémon-style type-chart multiplier on top, so a matchup is always explainable by one number.
 
+## Defense and hit resolution (decided 2026-10-27 — topic 3)
+**Order on every hit** (fixed, so every result is explainable in the combat log):
+1. **Immunity** — invulnerable / immune tag → stop
+2. **Hit vs. dodge** — only for dodgeable hits
+3. **Crit roll** (attacker)
+4. **Damage formula** — roll range, modifier stack, crit (see "Modifier stack")
+5. **Block** — physical only
+6. **Armor** (physical) or **resistance** (matching element); **true damage** skips this step
+7. **Shields** absorb the rest first
+8. **HP**
+Dodges and blocks show as floating text ("Dodge", "Blocked").
+
+**One curve for all defensive ratings:** `value / (value + 100)`.
+- **Armor / resistance:** damage taken = `100 / (100 + rating)`. 100 → 50 % reduction, 300 → 75 %, never 100 %. Every point gives the same survivability gain. **Negative ratings amplify** damage, capped at **2×** taken.
+- **Dodge vs. hit:** effective dodge = target dodge − attacker hit rating (min 0); dodge chance = `eff / (eff + 100)`. Hit rating exists to counter dodge.
+- **Block:** block chance on the same curve + block amount (e.g. a block removes 40 % of the hit). **Physical damage only.**
+
+**Rules**
+- **Dodgeable:** auto attacks and single-target abilities only. AoE and damage-over-time ticks can't be dodged.
+- **Block is physical only** → two tank identities: armor + block vs. physical, resistance vs. elements.
+- **True damage** exists as a rare type that ignores armor and resistance (answer to over-stacked tanks).
+- **Damage over time can't crit by default**; a per-ability flag can allow it.
+- Later: armor/resistance **penetration** as the attacker-side counter.
+
 ## Modifier stack (decided)
 Values are **calculated at cast/hit time, never stored as final numbers.** Sources: level-ups, items, auras, timed buffs, potions, combos, statuses.
 
@@ -65,7 +89,7 @@ Order of operations:
 2. **+ Flat** bonuses
 3. **× (1 + sum of additive %)** — items, power-ups, level-ups: all additive with each other
 4. **× each modifier in the final layer** — e.g. buffs ("+10 % damage for 20 s"), combos ("+X % per poison stack on the target"), and anything else flagged as final-layer
-5. Roll within the damage range, then crit, then target defenses/resistances
+5. Roll within the damage range, then crit; target defenses follow (see "Defense and hit resolution")
 
 Additive is the baseline; one multiplicative layer at the end. **Which layer a modifier belongs to is a property of the modifier, set in data** — the system must not hard-code which source types go where.
 
@@ -114,7 +138,7 @@ Answers from the full design review. Where these conflict with older text above,
 **Types**
 - Damage **types**: physical (blunt, bleed/scratch, …) + elements (fire, water/ice, electric, nature/poison, arcane, holy, doom, …). List TBD.
 - **Physical is countered by armor; elements by elemental resistance.**
-- Defense formula: TBD (see "Defense formula" topic).
+- Defense formula: decided, see "Defense and hit resolution".
 
 **Attacks and spells**
 - Every companion has a **basic attack** (melee or ranged, with a range). Attack speed is a stat.
@@ -149,7 +173,7 @@ Answers from the full design review. Where these conflict with older text above,
 ## Deep-dive topics (next)
 1. ~~Spell resource & priority~~ — decided, see "Abilities"
 2. ~~Crowd control~~ — principle decided (status building blocks, see "Status effects"); details evolve with content
-3. Defense formula: armor/resistance curve, hit vs. dodge vs. block order
+3. ~~Defense formula~~ — decided, see "Defense and hit resolution"
 4. Type list and resistance profiles
 5. Targeting rules list
 6. Spell behaviour primitives for the prototype
